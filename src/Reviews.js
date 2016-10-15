@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import StarRating from './StarRating';
+import SelectStars from './SelectStars';
 
 class Reviews extends Component {
 
@@ -18,31 +19,34 @@ class Reviews extends Component {
         rating: null,
         comment: syntheticEvent.target.elements[1]
         }
-      ]  
+      ]
     }
   }
   render(){
-    <section>
-      { this.state.reviews.map( (review) => {
-          return
-            <div className="review" key={review.user}>
-              <h4> {review.user} </h4>
-              <h5> {review.date} </h5>
-              <StarRating stars={review.rating} />
-              <p> {review.comment} </p>
-            </div>
-          });
-      }
+    return (
+      <section>
+        { this.state.reviews.map( (review) => {
+            return
+              <div className="review" key={review.user}>
+                <h4> {review.user} </h4>
+                <h5> {review.date} </h5>
+                <StarRating stars={review.rating} />
+                <p> {review.comment} </p>
+              </div>
+            });
+        }
 
-      <h3>Write a Review</h3>
-      <form onSubmit="handleReviewSubmission">
-        <label for="username"> Your Name: </label>
-         </br>
-        <input type="text" id="username" />
-        <textarea placeholder="Enter your review here"></textarea>
-        <button type="submit"/>
-      </form>
-    </section>
+        <h3>Write a Review</h3>
+        <form onSubmit="handleReviewSubmission">
+          <label for="username"> Your Name: </label>
+           </br>
+          <input type="text" id="username" />
+          <SelectStars />
+          <textarea placeholder="Enter your review here"></textarea>
+          <button type="submit"/>
+        </form>
+      </section>
+    )
   }
 }
 
