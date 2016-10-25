@@ -7,25 +7,39 @@ class Reviews extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { reviews: this.props.restaurant.reviews};
+    this.state = {
+      userSession: {
+        starsDirty: false,
+        starsRating: 0,
+        formIsValid: false
+      },
+      reviews: this.props.restaurant.reviews
+    };
     this.handleReviewSubmission.bind(this);
+    this.handleStarSelection.bind(this);
+    this.setReviewValidity.bind(this);
   }
 
+  setReviewValidity(){
+    this.setState = {userSession: {formIsValid: true}};
+  }
+  handleStarSelection(stars){
+    this.setState = { userSession: {starsDirty: true, starsRating: stars};
+  }
   handleReviewSubmission(syntheticEvent) {
     syntheticEvent.preventDefault();
-    this.setState = { reviews: [...this.state.reviews, {
+    this.setState = this.state.reviews.push({ // would prefer immutable method here
         user: syntheticEvent.target.elements[0],
         date: new Date(),
-        rating: null,
+        rating: this.state.userSession.starsRating,
         comment: syntheticEvent.target.elements[1]
-        }
-      ]
-    }
+    });
+    // render optimistically. user review shows instantly while here we push the new review to the server
   }
   render(){
     return (
       <section>
-        { this.state.reviews.map( (review) => {
+        { this.state.reviews.map( review => {
             return
               <div className="review" key={review.user}>
                 <h4> {review.user} </h4>
@@ -41,9 +55,9 @@ class Reviews extends Component {
           <label for="username"> Your Name: </label>
            </br>
           <input type="text" id="username" />
-          <SelectStars />
+          <SelectStars onStarSelect={this.handleStarSelection}/>
           <textarea placeholder="Enter your review here"></textarea>
-          <button type="submit"/>
+          <button type="submit" disabled={this.state.userSession}/>
         </form>
       </section>
     )

@@ -13,12 +13,12 @@ class SelectStars extends Component {
      };
      this.handleHover.bind(this);
      this.handleClick.bind(this);
-     //this.classLogic.bind(this);
+     //this.props.onStarSelect;
   }
   handleHover(syntheticEvent) {
     // index of star => change all fill states <= index to 1
     let targetIndex = syntheticEvent.target.getAttribute('data-index');
-    this.setState = { fillStates: this.state.fillStates.map (
+    this.setState = { fillStates: this.state.fillStates.map(
       (fillState, index) => { index <= targetIndex ? 1 : 0 };
     );}
   }
@@ -29,7 +29,8 @@ class SelectStars extends Component {
       rating: targetIndex + 1,
       fillStates: this.state.fillStates.map (
         (fillState, index) => { index <= targetIndex ? 2 : 0 };
-      )}
+      )};
+      this.props.onStarSelect(targetIndex + 1);
   }
 
 

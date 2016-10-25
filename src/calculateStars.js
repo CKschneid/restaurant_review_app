@@ -1,7 +1,7 @@
 const calculateStars = (restaurant) => {
-  let sum = restaurant.reviews.map( (review) => review.rating )
+  let sum = restaurant.reviews.map( review => review.rating )
                               .reduce ( (previous, current) => previous + current);
-  return sum / reviews.length;
+  return sum / restaurant.reviews.length;
 };
 
 export default calculateStars;

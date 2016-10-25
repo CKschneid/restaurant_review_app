@@ -20,19 +20,24 @@ class MainPage extends Component {
   }
 
   componentDidMount(){
-    this.setState = {restaurants: getJSON('restaurants.json')};
+    getJSON('restaurants.json').then( restaurantsData => {
+      this.setState({ restaurants: restaurantsData });
+    });
   }
 
   updateSortMethod(e){
     this.setState = { sortMethod: e.target.value};
   }
+
   sortByName(restaurants){
     return restaurants.sort( (a,b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
     });
   }
+
   sortByStars(restaurants){
     return restaurants.sort( (a,b) => calculateStars(a) > calculateStars(b) ? 1 : -1 );
   }
+
   filterForLate(restaurants){
     return restaurants.filter( (restaurant) => {
         let isOpenLate = false; // after 11 pm
@@ -42,7 +47,7 @@ class MainPage extends Component {
           }
         });
         return isOpenLate;
-    })
+    });
   }
 
   render() {
@@ -51,25 +56,27 @@ class MainPage extends Component {
         <h3> View By: </h3>
         <select onChange={this.updateSortMethod}>
           <option value="name" selected="true">Name</option>
-          <option value="stars" >Stars</option>
-          <option value="openLate" >Open Late</option>
+          <option value="stars">Stars</option>
+          <option value="openLate">Open Late</option>
         </select>
         <section>
           {
-            if (this.state.sortMethod = "name" ) {
-              sortByName(this.state.restaurants).map( (restaurant) => {
-                return <RestaurantListItem key={restaurant.place_id} restaurant={restaurant} />
-              })
-            }
-            if(this.state.sortMethod = "stars" ) {
-              sortByStars(this.state.restaurants).map( (restaurant) => {
-                return <RestaurantListItem key={restaurant.place_id} restaurant={restaurant} />
-            })
-            if(this.state.sortMethod = "openLate") {
-              sortByName(filterForLate(this.state.restaurants)).map( (restaurant) => {
-                return <RestaurantListItem key={restaurant.place_id} restaurant={restaurant} />
-              })
-            }
+            switch (this.state.sortMethod) {
+              case "name":
+                sortByName(this.state.restaurants).map( (restaurant) => {
+                  return <RestaurantListItem key={restaurant.place_id} restaurant={restaurant} />
+                });
+                break;
+              case "stars":
+                sortByStars(this.state.restaurants).map( (restaurant) => {
+                  return <RestaurantListItem key={restaurant.place_id} restaurant={restaurant} />
+                });
+                break;
+              case "openLate":
+                sortByName(filterForLate(this.state.restaurants)).map( (restaurant) => {
+                  return <RestaurantListItem key={restaurant.place_id} restaurant={restaurant} />
+                });
+              }
           }
         </section>
       </section>

@@ -9,18 +9,17 @@ class RestaurantFullPage extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = { featuredRestaurant: { }};
   }
 
   componentDidMount(){
-    let restaurants = getJSON('restaurants.json');
-    let restaurant = restaurants.find((restaurant) => restaurant.place_id == this.props.params.place_id);
-    this.setState = { featuredRestaurant: restaurant};
+    getJSON('restaurants.json').then( restaurantsData => {
+      let restaurant = restaurantsData.find( restaurant => restaurant.place_id == this.props.params.place_id );
+      this.setState = {featuredRestaurant: restaurant};
+    });
   }
 
   render(){
-
     <section>
       <h1> {this.state.featuredRestaurant.name}</h1>
       <img src={`images/${this.state.featuredRestaurant.place_id}`} />
